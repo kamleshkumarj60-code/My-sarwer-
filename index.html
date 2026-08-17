@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ADMIN SERVER</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="grid"></div>
+  <main class="panel">
+    <header>
+      <div class="brand-mark">✦</div>
+      <div>
+        <div class="brand">ADMIN SERVER</div>
+        <div class="sub">MADE BY @BN_OWNER</div>
+      </div>
+      <div class="window"><span>−</span><span>×</span></div>
+    </header>
+
+    <section class="content">
+      <div class="online"><span></span> ONLINE</div>
+      <div class="logo">ADMIN</div>
+      <h1>LOGIN</h1>
+      <div class="authorized">AUTHORIZED ACCESS</div>
+
+      <label>ACCESS KEY</label>
+      <div class="input-wrap">
+        <span>🔑</span>
+        <input id="key" type="password" placeholder="Enter access key" autocomplete="off">
+      </div>
+
+      <button id="login">🛡 LOGIN</button>
+      <button class="contact" id="contact">✈ CONTACT ADMIN</button>
+      <div id="message" class="message"></div>
+    </section>
+
+    <footer>© 2026 <b>MY-SARWER</b></footer>
+  </main>
+
+<script>
+const key = document.getElementById("key");
+const login = document.getElementById("login");
+const message = document.getElementById("message");
+
+async function doLogin() {
+  message.textContent = "Checking...";
+  try {
+    const r = await fetch("/api/login", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({accessKey: key.value})
+    });
+    const data = await r.json();
+    message.textContent = data.message;
+    message.className = "message " + (data.ok ? "ok" : "error");
+  } catch {
+    message.textContent = "Server से संपर्क नहीं हो पाया";
+    message.className = "message error";
+  }
+}
+
+login.addEventListener("click", doLogin);
+key.addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); });
+document.getElementById("contact").addEventListener("click", () => {
+  window.location.href = "https://t.me/";
+});
+</script>
+</body>
+</html>
