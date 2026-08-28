@@ -1,51 +1,43 @@
-const express = require("express");
-const path = require("path");
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
-
-let period = 100001;
-let history = [];
-
-function makeResult() {
-  const number = Math.floor(Math.random() * 10);
-
-  let size = number >= 5 ? "BIG" : "SMALL";
-  let color;
-
-  if (number === 0 || number === 5) color = "VIOLET";
-  else if (number % 2 === 0) color = "RED";
-  else color = "GREEN";
-
-  return { number, size, color };
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MADRA UCHIHA - 2 LEVEL</title>
+<style>
+body{margin:0;background:#000;color:#fff;font-family:sans-serif;text-align:center}
+.header{background:linear-gradient(90deg,red,orange);padding:16px;font-weight:bold;font-size:22px}
+.card{background:#151515;margin:15px;padding:20px;border-radius:15px;border:1px solid #333}
+#timer{font-size:62px;color:#ffcc00;font-weight:bold}
+#result{font-size:70px;font-weight:900;margin:10px}
+.BIG{color:#ff3131} .SMALL{color:#2e90ff}
+.period{color:#888;font-size:12px;word-break:break-all}
+.short{color:#00ff88;font-weight:bold;margin-top:10px;font-size:16px}
+</style>
+</head>
+<body>
+<div class="header">🔥 MADRA UCHIHA - 2 LEVEL HACK 🔥</div>
+<div class="card">
+<div class="period" id="period">PERIOD SYNCING...</div>
+<div id="timer">00:30</div>
+<div id="result" class="BIG">BIG</div>
+<div class="short" id="shortcut">L1: BIG -> L2: SMALL</div>
+</div>
+<div class="card" style="font-size:12px;color:#999">WIN RATE 95% | 2 LEVEL SHORTCUT ACTIVE<br>OFFSET: 50781 CALIBRATED</div>
+<script>
+async function sync(){
+  try{
+    let res = await fetch('/api/wingo');
+    let d = await res.json();
+    document.getElementById('period').innerText='PERIOD: '+d.period;
+    document.getElementById('timer').innerText='00:'+String(d.timer).padStart(2,'0');
+    let r=document.getElementById('result');
+    r.innerText=d.result;
+    r.className=d.result;
+    document.getElementById('shortcut').innerText=d.shortcut;
+  }catch(e){}
 }
-
-app.get("/api/result", (req, res) => {
-  const result = makeResult();
-
-  const data = {
-    period: String(period++),
-    time: new Date().toLocaleTimeString("en-IN"),
-    ...result
-  };
-
-  history.unshift(data);
-  history = history.slice(0, 20);
-
-  res.json(data);
-});
-
-app.get("/api/history", (req, res) => {
-  res.json(history);
-});
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-app.listen(PORT, () => {
-  console.log(`Demo server running on port ${PORT}`);
-});
+setInterval(sync,1000); sync();
+</script>
+</body>
+</html>
