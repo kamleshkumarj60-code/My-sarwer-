@@ -1,70 +1,91 @@
-<!doctype html>
-<html lang="hi">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>ADMIN SERVER</title>
-  <link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MADRA UCHIHA - limited edition</title>
+<style>
+body{margin:0;background:#000;font-family:Arial;display:flex;justify-content:center}
+.main{width:380px;background:#110000;min-height:100vh;border:1px solid #333}
+.header{background:#ff2d2d;color:#fff;padding:10px;text-align:center;font-weight:900;letter-spacing:1px}
+.left{width:110px;background:#000;padding:10px;float:left;min-height:400px}
+.btn{width:100%;background:#ff3d00;color:#fff;border:0;padding:10px;margin:6px 0;border-radius:20px;font-weight:900;font-size:13px}
+.right{margin-left:130px;background:#0a0000;padding:10px;min-height:400px}
+.hack-head{background:#ff2d2d;color:#fff;padding:8px;display:flex;justify-content:space-between;align-items:center;font-weight:900}
+.period-box{border:1px solid red;color:red;font-size:11px;padding:5px;margin:10px 0;display:flex;justify-content:space-between}
+.big-result{background:#ff2d2d;color:#fff;text-align:center;padding:18px 0;font-size:22px;font-weight:900;border-radius:10px;margin:10px 0}
+.predict{background:#ff3d00;color:#fff;border:0;width:100%;padding:12px;border-radius:20px;font-weight:900;margin-top:10px}
+</style>
 </head>
 <body>
-  <div class="grid"></div>
-  <main class="panel">
-    <header>
-      <div class="brand-mark">✦</div>
-      <div>
-        <div class="brand">ADMIN SERVER</div>
-        <div class="sub">MADE BY @BN_OWNER</div>
-      </div>
-      <div class="window"><span>−</span><span>×</span></div>
-    </header>
-
-    <section class="content">
-      <div class="online"><span></span> ONLINE</div>
-      <div class="logo">ADMIN</div>
-      <h1>LOGIN</h1>
-      <div class="authorized">AUTHORIZED ACCESS</div>
-
-      <label>ACCESS KEY</label>
-      <div class="input-wrap">
-        <span>🔑</span>
-        <input id="key" type="password" placeholder="Enter access key" autocomplete="off">
-      </div>
-
-      <button id="login">🛡 LOGIN</button>
-      <button class="contact" id="contact">✈ CONTACT ADMIN</button>
-      <div id="message" class="message"></div>
-    </section>
-
-    <footer>© 2026 <b>MY-SARWER</b></footer>
-  </main>
+<div class="main">
+<div class="header">MADRA UCHIHA - limited edition</div>
+<div class="left">
+<img src="https://i.ibb.co/0jZ8zQY/madara.png" style="width:100%;border-radius:10px" onerror="this.style.display='none'">
+<button class="btn" style="background:#222">SETTINGS</button>
+<button class="btn">HACK</button>
+<button class="btn" style="background:#222">OTHER</button>
+<button class="btn" style="background:#222">JOIN</button>
+</div>
+<div class="right">
+<div class="hack-head"><span><</span> HACK <span>></span></div>
+<div style="color:#fff;font-size:13px;margin-top:8px;font-weight:700">Wingo Type : 30 Sec</div>
+<div class="period-box"><span id="FP">20260825100051541</span><span id="TM">00:27</span></div>
+<div class="big-result" id="RES">SMALL</div>
+<div style="color:#fff;font-size:12px"><input type="checkbox" id="chk"> Number & Color Hack</div>
+<button class="predict" onclick="PREDICT()">PREDICT RESULT</button>
+<div style="color:#ff5a5a;font-size:9px;margin-top:15px;text-align:center">sometimes it may show wrong results bcz of server error so don't worry</div>
+</div>
+<div style="clear:both"></div>
+<div style="background:linear-gradient(orange,#ff6a00);margin:10px;border-radius:15px;padding:10px;text-align:center;color:#fff">
+<div style="font-size:12px">Lottery results <span style="background:#4caf50;padding:3px 8px;border-radius:5px">Green</span> <span style="background:#4caf50;padding:2px 6px;border-radius:50%">3</span> <span style="background:#4caf50;padding:3px 8px;border-radius:5px">Small</span></div>
+<div style="background:#fff;color:#000;margin:12px 0;border-radius:10px;padding:15px">
+<div style="color:#b71c1c;font-size:12px">Bonus</div>
+<div style="font-size:22px;font-weight:900;color:#b71c1c">₹1,413.16</div>
+<div style="font-size:10px;color:gray">Period: WinGo 30sec<br><span id="LP">20260825100051540</span></div>
+</div>
+<div style="font-size:11px">✓ 5 seconds auto close</div>
+</div>
+</div>
 
 <script>
-const key = document.getElementById("key");
-const login = document.getElementById("login");
-const message = document.getElementById("message");
-
-async function doLogin() {
-  message.textContent = "Checking...";
-  try {
-    const r = await fetch("/api/login", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({accessKey: key.value})
-    });
-    const data = await r.json();
-    message.textContent = data.message;
-    message.className = "message " + (data.ok ? "ok" : "error");
-  } catch {
-    message.textContent = "Server से संपर्क नहीं हो पाया";
-    message.className = "message error";
-  }
+var offset=0, lastP="";
+function getIST(){
+ var d=new Date();
+ return new Date(d.getTime()+d.getTimezoneOffset()*60000+330*60000);
 }
-
-login.addEventListener("click", doLogin);
-key.addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); });
-document.getElementById("contact").addEventListener("click", () => {
-  window.location.href = "https://t.me/";
-});
+function makePeriod30(){
+ var ist=getIST();
+ var yyyy=ist.getFullYear();
+ var mm=("0"+(ist.getMonth()+1)).slice(-2);
+ var dd=("0"+ist.getDate()).slice(-2);
+ var totalSec=ist.getHours()*3600+ist.getMinutes()*60+ist.getSeconds();
+ var pno=Math.floor(totalSec/30)+10001+offset;
+ var full=yyyy+mm+dd+"1000"+pno;
+ return {full:full, sec: totalSec%30, pno:pno};
+}
+function PREDICT(){
+ var r=Math.random()>0.5?"BIG":"SMALL";
+ var n=Math.floor(Math.random()*10);
+ var col=r=="BIG"?"#ff2d2d":"#1976d2";
+ var el=document.getElementById("RES");
+ el.innerText=r;
+ el.style.background=col;
+ if(document.getElementById("chk").checked){
+   el.innerHTML=r+"<br><span style='font-size:14px'>"+n+" | "+(n%2==0?"RED":"GREEN")+"</span>";
+ }
+}
+function UPDATE(){
+ var d=makePeriod30();
+ document.getElementById("FP").innerText=d.full;
+ document.getElementById("LP").innerText=d.full;
+ var rem=30-d.sec;
+ document.getElementById("TM").innerText="00:"+("0"+rem).slice(-2);
+ if(lastP && lastP!=d.full){ PREDICT(); }
+ lastP=d.full;
+}
+setInterval(UPDATE,1000);
+UPDATE();
+PREDICT();
 </script>
 </body>
 </html>
