@@ -10,9 +10,9 @@ body{margin:0;background:#0f0f0f;color:#fff;font-family:sans-serif;text-align:ce
 .box{background:#1e1e1e;margin:15px;padding:15px;border-radius:15px;border:1px solid #ff000033}
 .period{font-size:13px;color:#aaa;word-break:break-all}
 .timer{font-size:48px;font-weight:bold;color:#ffcc00;margin:10px}
-.result{font-size:60px;font-weight:900;margin:15px;text-shadow:0 0 20px #ff0000}
+.result{font-size:60px;font-weight:900;margin:15px}
 .big{color:#ff3333} .small{color:#3399ff}
-.btn{background:linear-gradient(90deg,#ff0000,#ff6600);border:none;padding:15px 40px;font-size:20px;font-weight:bold;color:#fff;border-radius:30px;margin-top:15px}
+.btn{background:linear-gradient(90deg,#ff0000,#ff6600);border:none;padding:14px 40px;font-size:18px;font-weight:bold;color:#fff;border-radius:30px;margin-top:10px}
 .bonus{color:#00ff88;font-size:18px;margin-top:10px}
 </style>
 </head>
@@ -23,7 +23,7 @@ body{margin:0;background:#0f0f0f;color:#fff;font-family:sans-serif;text-align:ce
 <div class="timer" id="timer">00:30</div>
 <div class="result big" id="mainResult">BIG</div>
 <div class="bonus" id="bonus">WIN: ₹0</div>
-<div style="font-size:11px;color:#666;margin-top:8px">BDG SYNCED • Offset: 50781</div>
+<div style="font-size:11px;color:#666;margin-top:8px">BDG SYNCED</div>
 </div>
 <button class="btn" onclick="document.getElementById('pop').style.display='block'">PREDICT NOW</button>
 
@@ -37,25 +37,11 @@ body{margin:0;background:#0f0f0f;color:#fff;font-family:sans-serif;text-align:ce
 </div>
 
 <script>
-// === CALIBRATED FROM YOUR SCREENSHOT ===
-// Screenshot time: 11:22, Period: 52145, Timer 00:22
-// IST index at 11:22 = 1364
-// OFFSET = 52145 - 1364 = 50781
-const OFFSET = 50781;
+const BDG_OFFSET = 50781; // Fixed from your screenshot 52145 at 11:22
 
-function getWingoPeriod(){
+function getPeriod(){
   const now = new Date();
   const ist = new Date(now.toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}));
   const totalSec = ist.getHours()*3600 + ist.getMinutes()*60 + ist.getSeconds();
   const index = Math.floor(totalSec / 30);
-  const dateStr = ist.getFullYear().toString() + String(ist.getMonth()+1).padStart(2,'0') + String(ist.getDate()).padStart(2,'0');
-  const realNum = index + OFFSET;
-  const fullPeriod = dateStr + "1000" + realNum;
-  const secLeft = 30 - (totalSec % 30);
-  return {fullPeriod, secLeft, realNum};
-}
-
-function genResult(){
-  let res = Math.random() > 0.5 ? "BIG" : "SMALL";
-  let el = document.getElementById('mainResult');
-  el.innerText = res;
+  const dateStr = ist.getFullYear().toString() + String(
