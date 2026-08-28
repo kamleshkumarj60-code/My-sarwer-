@@ -1,71 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MADRA UCHIHA - VIP HACK</title>
-<style>
-body{margin:0;background:#0f0f0f;color:#fff;font-family:sans-serif;text-align:center}
-.header{background:linear-gradient(90deg,#ff0000,#8B0000);padding:15px;font-size:20px;font-weight:bold}
-.box{background:#1e1e1e;margin:15px;padding:15px;border-radius:15px;border:1px solid #ff000033}
-.period{font-size:13px;color:#aaa;word-break:break-all}
-.timer{font-size:48px;font-weight:bold;color:#ffcc00;margin:10px}
-.result{font-size:60px;font-weight:900;margin:15px}
-.big{color:#ff3333} .small{color:#3399ff}
-.btn{background:linear-gradient(90deg,#ff0000,#ff6600);border:none;padding:14px 40px;font-size:18px;font-weight:bold;color:#fff;border-radius:30px;margin-top:10px}
-.bonus{color:#00ff88;font-size:16px;margin-top:10px}
-</style>
-</head>
-<body>
-<div class="header">🔥 MADRA UCHIHA - VIP HACK 🔥</div>
-<div class="box">
-<div class="period">PERIOD: <span id="period">Syncing...</span></div>
-<div class="timer" id="timer">00:30</div>
-<div class="result big" id="mainResult">BIG</div>
-<div class="bonus" id="bonus">WIN: ₹0</div>
-<div style="font-size:11px;color:#666;margin-top:8px">BDG SYNC ACTIVE</div>
-</div>
-<button class="btn" onclick="document.getElementById('pop').style.display='block'">PREDICT NOW</button>
+const express = require("express");
+const path = require("path");
 
-<div id="pop" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000000dd;z-index:99;padding-top:180px">
-<div style="background:#1e1e1e;margin:20px;padding:20px;border-radius:15px;border:2px solid red">
-<h2 style="color:#ffcc00">PREDICTION SUCCESS</h2>
-<p>Bet on: <b id="popRes" style="font-size:32px"></b></p>
-<p id="popPeriod" style="font-size:12px;color:#aaa"></p>
-<button onclick="this.parentElement.parentElement.style.display='none'" style="padding:10px 20px">OK</button>
-</div>
-</div>
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-<script>
-// CALIBRATED OFFSET - Based on your BDG screenshot
-const OFFSET = 50781; 
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 
-function getPeriod(){
-  const now = new Date();
-  const ist = new Date(now.toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}));
-  const totalSec = ist.getHours()*3600 + ist.getMinutes()*60 + ist.getSeconds();
-  const index = Math.floor(totalSec / 30);
-  const dateStr = ist.getFullYear()+ String(ist.getMonth()+1).padStart(2,'0') + String(ist.getDate()).padStart(2,'0');
-  const num = index + OFFSET;
-  const full = dateStr + "1000" + num;
-  const left = 30 - (totalSec % 30);
-  return {full, left};
+let period = 100001;
+let history = [];
+
+function makeResult() {
+  const number = Math.floor(Math.random() * 10);
+
+  let size = number >= 5 ? "BIG" : "SMALL";
+  let color;
+
+  if (number === 0 || number === 5) color = "VIOLET";
+  else if (number % 2 === 0) color = "RED";
+  else color = "GREEN";
+
+  return { number, size, color };
 }
-function update(){
-  let d = getPeriod();
-  document.getElementById('period').innerText = d.full;
-  document.getElementById('popPeriod').innerText = d.full;
-  document.getElementById('timer').innerText = "00:"+String(d.left).padStart(2,'0');
-  if(d.left==30){
-    let r = Math.random()>0.5?"BIG":"SMALL";
-    let el = document.getElementById('mainResult');
-    el.innerText=r; el.className="result "+(r=="BIG"?"big":"small");
-    document.getElementById('popRes').innerText=r;
-    document.getElementById('bonus').innerText="WIN: ₹"+(Math.random()*2000+500).toFixed(2);
-  }
-}
-setInterval(update,1000);
-update();
-</script>
-</body>
-</html>
+
+app.get("/api/result", (req, res) => {
+  const result = makeResult();
+
+  const data = {
+    period: String(period++),
+    time: new Date().toLocaleTimeString("en-IN"),
+    ...result
+  };
+
+  history.unshift(data);
+  history = history.slice(0, 20);
+
+  res.json(data);
+});
+
+app.get("/api/history", (req, res) => {
+  res.json(history);
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+app.listen(PORT, () => {
+  console.log(`Demo server running on port ${PORT}`);
+});
