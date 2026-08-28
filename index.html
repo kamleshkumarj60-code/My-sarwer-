@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MADRA UCHIHA - BIG HACK</title>
+<title>MADRA UCHIHA - VIP HACK</title>
 <style>
 body{margin:0;background:#0f0f0f;color:#fff;font-family:sans-serif;text-align:center}
-.header{background:linear-gradient(90deg,#ff0000,#8B0000);padding:15px;font-size:22px;font-weight:bold;letter-spacing:1px}
+.header{background:linear-gradient(90deg,#ff0000,#8B0000);padding:15px;font-size:22px;font-weight:bold}
 .box{background:#1e1e1e;margin:15px;padding:15px;border-radius:15px;border:1px solid #ff000033}
-.period{font-size:14px;color:#aaa;word-break:break-all}
-.timer{font-size:42px;font-weight:bold;color:#ffcc00;margin:10px}
+.period{font-size:13px;color:#aaa;word-break:break-all}
+.timer{font-size:48px;font-weight:bold;color:#ffcc00;margin:10px}
 .result{font-size:60px;font-weight:900;margin:15px;text-shadow:0 0 20px #ff0000}
 .big{color:#ff3333} .small{color:#3399ff}
 .btn{background:linear-gradient(90deg,#ff0000,#ff6600);border:none;padding:15px 40px;font-size:20px;font-weight:bold;color:#fff;border-radius:30px;margin-top:15px}
@@ -18,62 +18,44 @@ body{margin:0;background:#0f0f0f;color:#fff;font-family:sans-serif;text-align:ce
 </head>
 <body>
 <div class="header">🔥 MADRA UCHIHA - VIP HACK 🔥</div>
-
 <div class="box">
-<div class="period">PERIOD: <span id="period">Loading...</span></div>
+<div class="period">PERIOD: <span id="period">Syncing...</span></div>
 <div class="timer" id="timer">00:30</div>
-<div class="result" id="mainResult">BIG</div>
-<div class="bonus" id="bonus">₹0</div>
-<div style="font-size:12px;color:#888;margin-top:5px">Next: <span id="p2">...</span></div>
+<div class="result big" id="mainResult">BIG</div>
+<div class="bonus" id="bonus">WIN: ₹0</div>
+<div style="font-size:11px;color:#666;margin-top:8px">BDG SYNCED • Offset: 50781</div>
 </div>
-
-<button class="btn" onclick="predict()">PREDICT NOW</button>
+<button class="btn" onclick="document.getElementById('pop').style.display='block'">PREDICT NOW</button>
 
 <div id="pop" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000000dd;z-index:99;padding-top:200px">
 <div style="background:#1e1e1e;margin:20px;padding:20px;border-radius:15px;border:2px solid red">
 <h2 style="color:#ffcc00">PREDICTION SUCCESS</h2>
-<p>Place bet on: <b id="popRes" style="font-size:28px"></b></p>
-<p>Period: <span id="popPeriod"></span></p>
-<button onclick="document.getElementById('pop').style.display='none'" style="padding:10px 20px">OK</button>
+<p>Bet on: <b id="popRes" style="font-size:32px"></b></p>
+<p id="popPeriod" style="font-size:12px;color:#aaa"></p>
+<button onclick="this.parentElement.parentElement.style.display='none'" style="padding:10px 20px">OK</button>
 </div>
 </div>
 
 <script>
+// === CALIBRATED FROM YOUR SCREENSHOT ===
+// Screenshot time: 11:22, Period: 52145, Timer 00:22
+// IST index at 11:22 = 1364
+// OFFSET = 52145 - 1364 = 50781
+const OFFSET = 50781;
+
 function getWingoPeriod(){
   const now = new Date();
   const ist = new Date(now.toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}));
   const totalSec = ist.getHours()*3600 + ist.getMinutes()*60 + ist.getSeconds();
   const index = Math.floor(totalSec / 30);
   const dateStr = ist.getFullYear().toString() + String(ist.getMonth()+1).padStart(2,'0') + String(ist.getDate()).padStart(2,'0');
-  const periodNum = 10001 + index;
-  const fullPeriod = dateStr + "1000" + periodNum;
+  const realNum = index + OFFSET;
+  const fullPeriod = dateStr + "1000" + realNum;
   const secLeft = 30 - (totalSec % 30);
-  return {fullPeriod, secLeft};
+  return {fullPeriod, secLeft, realNum};
 }
+
 function genResult(){
-  let arr=["BIG","SMALL"];
-  let res=arr[Math.floor(Math.random()*2)];
-  let el=document.getElementById('mainResult');
-  el.innerText=res;
-  el.className="result "+(res=="BIG"?"big":"small");
-  document.getElementById('bonus').innerText="WIN: ₹"+(Math.random()*2000+500).toFixed(2);
-  document.getElementById('popRes').innerText=res;
-}
-function updateAll(){
-  let data=getWingoPeriod();
-  document.getElementById('period').innerText=data.fullPeriod;
-  document.getElementById('p2').innerText=data.fullPeriod;
-  document.getElementById('popPeriod').innerText=data.fullPeriod;
-  document.getElementById('timer').innerText="00:"+String(data.secLeft).padStart(2,'0');
-  if(data.secLeft==30){ genResult(); }
-}
-function predict(){
-  document.getElementById('pop').style.display='block';
-  setTimeout(()=>{document.getElementById('pop').style.display='none';},4000);
-}
-setInterval(updateAll,1000);
-updateAll();
-genResult();
-</script>
-</body>
-</html>
+  let res = Math.random() > 0.5 ? "BIG" : "SMALL";
+  let el = document.getElementById('mainResult');
+  el.innerText = res;
