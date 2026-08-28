@@ -1,82 +1,43 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MADRA UCHIHA - limited edition</title>
-<style>
-body{margin:0;background:#000;display:flex;justify-content:center;font-family:Arial}
-.phone{width:390px;min-height:100vh;background:#080000;border:1px solid #222;position:relative}
-.top{ background:#ff0000;color:#fff;text-align:center;padding:12px;font-weight:bold;letter-spacing:1px;font-size:15px}
-.left{width:125px;float:left;padding:10px;text-align:center}
-.menu-btn{width:100%;padding:12px;margin-top:10px;border:0;border-radius:20px;font-weight:bold;font-size:13px}
-.m1{background:#00aaff;color:#fff;height:110px;border-radius:15px}
-.m2{background:#222;color:#fff}
-.m3{background:#ff2200;color:#fff}
-.right{margin-left:135px;padding:10px}
-.hack-bar{background:#ff0000;color:#fff;display:flex;justify-content:space-between;padding:8px 12px;font-weight:bold;font-size:14px}
-.wingo{color:#fff;font-size:13px;margin-top:10px}
-.period-box{border:1px solid #ff0000;color:#ff0000;display:flex;justify-content:space-between;padding:6px;font-size:11px;margin-top:8px}
-.big-btn{background:#0a5bb5;color:#fff;width:100%;padding:18px;border:0;border-radius:10px;font-size:22px;font-weight:bold;margin-top:10px;letter-spacing:1px}
-.predict{background:#ff1a1a;color:#fff;width:100%;padding:14px;border:0;border-radius:20px;font-weight:bold;margin-top:15px}
-.warn{color:#ff0000;font-size:8px;text-align:center;margin-top:8px}
-.result-pop{position:absolute;bottom:120px;left:10px;right:10px;background:linear-gradient(to bottom,#ffbb00,#ff6600);border-radius:20px;padding:10px;text-align:center;display:none}
-.res-box{background:#fff;border-radius:12px;padding:12px;margin-top:5px}
-</style>
-</head>
-<body>
-<div class="phone">
-<div class="top">MADRA UCHIHA - limited edition</div>
-<div class="left">
-<button class="menu-btn m1">imgbb.com<br><span style="font-size:9px">image not found</span></button>
-<button class="menu-btn m2">SETTINGS</button>
-<button class="menu-btn m3">HACK</button>
-<button class="menu-btn m2">OTHER</button>
-<button class="menu-btn m2">JOIN</button>
-</div>
-<div class="right">
-<div class="hack-bar"><span><</span><span>HACK</span><span>></span></div>
-<div class="wingo">Wingo Type : 30 Sec</div>
-<div class="period-box"><span id="period">20260828100012705</span><span id="timer" style="color:#ffaaaa">00:15</span></div>
-<button class="big-btn" id="mainResult">SMALL</button>
-<div style="color:#fff;font-size:11px;margin-top:10px"><input type="checkbox" checked> Number & Color Hack</div>
-<button class="predict" onclick="predict()">PREDICT RESULT</button>
-<div class="warn">sometimes it may show wrong results bcz of server error so don't worry</div>
-</div>
-
-<div class="result-pop" id="pop">
-<div style="font-size:11px;color:#fff">Lottery results <span style="background:green;padding:2px 8px;border-radius:10px">Green</span> <span style="background:green;padding:2px 8px;border-radius:50%">3</span> <span style="background:green;padding:2px 8px;border-radius:10px">Small</span></div>
-<div class="res-box">
-<div style="font-size:10px;color:red">Bonus</div>
-<div style="font-size:22px;font-weight:bold;color:#b00000" id="bonus">₹1,413.16</div>
-<div style="font-size:9px;color:#555">Period: WinGo 30sec<br><span id="p2">20260828100012705</span></div>
-</div>
-<div style="font-size:10px;color:#fff;margin-top:5px">✓ 5 seconds auto close</div>
-</div>
-
-</div>
 <script>
-let time=15;
-let perNum=12705;
-function updateTimer(){
- time--;
- if(time<0){ time=29; perNum++; genResult(); }
- document.getElementById('timer').innerText="00:"+(time<10?"0"+time:time);
- let per="202608281000"+perNum;
- document.getElementById('period').innerText=per;
- document.getElementById('p2').innerText=per;
+let perNumStart = 10001; // aaj ka starting period
+
+function getWingoPeriod() {
+  const now = new Date();
+  // IST time
+  const ist = new Date(now.toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}));
+  const totalSec = ist.getHours() * 3600 + ist.getMinutes() * 60 + ist.getSeconds();
+  const index = Math.floor(totalSec / 30); // 30 sec me 1 period
+  const dateStr = ist.getFullYear().toString() + String(ist.getMonth()+1).padStart(2,'0') + String(ist.getDate()).padStart(2,'0');
+  const periodNum = 10001 + index;
+  const fullPeriod = dateStr + "1000" + periodNum;
+  const secLeft = 30 - (totalSec % 30);
+  return { fullPeriod, secLeft };
 }
+
+function updateAll() {
+  let data = getWingoPeriod();
+  document.getElementById('period').innerText = data.fullPeriod;
+  document.getElementById('p2').innerText = data.fullPeriod;
+  document.getElementById('timer').innerText = "00:" + String(data.secLeft).padStart(2,'0');
+  
+  if(data.secLeft === 30){ // naya period
+     genResult();
+  }
+}
+
 function genResult(){
- let arr=["BIG","SMALL"];
- let res=arr[Math.floor(Math.random()*2)];
- document.getElementById('mainResult').innerText=res;
- document.getElementById('bonus').innerText="₹"+(Math.random()*2000+500).toFixed(2);
+  let arr=["BIG","SMALL"];
+  let res=arr[Math.floor(Math.random()*2)];
+  document.getElementById('mainResult').innerText=res;
+  document.getElementById('bonus').innerText="₹"+(Math.random()*2000+500).toFixed(2);
 }
+
 function predict(){
- document.getElementById('pop').style.display='block';
- setTimeout(()=>{ document.getElementById('pop').style.display='none'; },5000);
+  document.getElementById('pop').style.display='block';
+  setTimeout(()=>{ document.getElementById('pop').style.display='none'; },5000);
 }
-setInterval(updateTimer,1000);
+
+setInterval(updateAll,1000);
+updateAll();
 genResult();
 </script>
-</body>
-</html>
