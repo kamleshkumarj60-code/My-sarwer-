@@ -1,1 +1,218 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DEVIL X PANNLE VIP</title><style>body{background:#000;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;font-family:sans-serif}.box{width:350px;background:#000;border:2px solid #00f5ff;border-radius:20px;padding:12px;box-shadow:0 0 25px #00f5ff}.top{border:2px solid #00f5ff;border-radius:12px;padding:10px;text-align:center;color:#00f5ff;font-weight:bold;font-size:20px}.vip{background:#00f5ff;color:#000;padding:2px 8px;border-radius:6px;font-size:12px}.mid{border:2px solid #00f5ff;border-radius:12px;padding:8px;margin:8px 0;display:flex;justify-content:space-between;color:#00f5ff;font-size:11px}.main{border:2px solid #00f5ff;border-radius:15px;padding:12px;text-align:center}.period{font-size:10px;color:#888;word-break:break-all}#timer{font-size:42px;color:#ffcc00;font-weight:bold}.suggest{margin:8px 0;padding:8px;border-radius:8px;font-weight:bold;font-size:13px;background:#222;color:#fff}.b{padding:10px 20px;border:none;border-radius:20px;font-weight:bold;margin:4px}.big{background:#ff3131;color:#fff}.small{background:#2e90ff;color:#fff}.dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:3px;font-weight:bold;font-size:12px}.BIG{background:#ff3131}.SMALL{background:#2e90ff}</style></head><body><div class=box><div class=top>DEVIL X PANNLE <span class=vip>VIP</span></div><div class=mid><span>LIVE MOD: ACTIVE</span><span id=ping>PING: 48MS</span></div><div class=main><div class=period id=period>PERIOD: Loading...</div><div id=timer>00:30</div><div id=suggestion class=suggest>3 result dalo trend ke liye</div><div><button class="b big" onclick="add('BIG')">BIG 🔴</button><button class="b small" onclick="add('SMALL')">SMALL 🔵</button></div><div id=history style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:10px"></div><div id=stats style="color:#0f0;margin-top:6px;font-size:12px"></div></div></div><script>let h=JSON.parse(localStorage.getItem('m')||'[]');function add(r){h.unshift({r});if(h.length>20)h.pop();localStorage.setItem('m',JSON.stringify(h));render()}function render(){let s='',b=0,sm=0;h.forEach(x=>{if(x.r=='BIG')b++;else sm++;s+=`<div class=dot ${x.r}>${x.r[0]}</div>`});document.getElementById('history').innerHTML=s;document.getElementById('stats').innerText=`Total ${h.length} | BIG ${b} | SMALL ${sm}`;let sug=document.getElementById('suggestion');if(h.length<3){sug.innerText='Kam se kam 3 result dalo';return}let l3=h.slice(0,3).map(x=>x.r);if(l3[0]==l3[1]&&l3[1]==l3[2]){sug.innerText=`🔄 3x ${l3[0]}! Ab ${l3[0]=='BIG'?'SMALL':'BIG'} trend`;sug.style.background=l3[0]=='BIG'?'#2e90ff':'#ff3131'}else if(b>sm+3){sug.innerText=`📈 BIG zyada (${b} vs ${sm})`;sug.style.background='#2e90ff'}else if(sm>b+3){sug.innerText=`📈 SMALL zyada (${sm} vs ${b})`;sug.style.background='#ff3131'}else{sug.innerText='⚖️ Mix trend - 1 level dekho';sug.style.background='#333'}}async function sync(){try{let d=await(await fetch('/api/wingo')).json();document.getElementById('period').innerText='PERIOD: '+d.period;document.getElementById('timer').innerText='00:'+String(d.timer).padStart(2,'0');}catch(e){let now=new Date();let s=now.getSeconds();document.getElementById('timer').innerText='00:'+String(30-s%30).padStart(2,'0')}}setInterval(sync,1000);sync();render();</script></body></html>
+```html
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wingo Demo</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#0b1020;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+.container{
+  max-width:430px;
+  margin:auto;
+  padding:18px;
+}
+h1{
+  text-align:center;
+  margin:10px 0 20px;
+}
+.card{
+  background:#151d33;
+  border:1px solid #293653;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:15px;
+}
+.label{
+  color:#9ba8c7;
+  font-size:14px;
+}
+.period{
+  font-size:22px;
+  font-weight:bold;
+  margin-top:7px;
+}
+.timer{
+  text-align:center;
+  font-size:42px;
+  font-weight:bold;
+  margin:10px 0;
+}
+.result{
+  text-align:center;
+  padding:18px;
+  border-radius:14px;
+  background:#0e1628;
+}
+.number{
+  font-size:55px;
+  font-weight:bold;
+}
+.color{
+  font-size:20px;
+  font-weight:bold;
+}
+.big{
+  color:#ff5c5c;
+}
+.small{
+  color:#4da3ff;
+}
+.green{color:#20d878}
+.red{color:#ff5252}
+.violet{color:#c56cff}
+button{
+  width:100%;
+  padding:14px;
+  border:0;
+  border-radius:12px;
+  background:#4169e1;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+}
+.history{
+  display:flex;
+  justify-content:space-between;
+  padding:10px 0;
+  border-bottom:1px solid #293653;
+}
+.dot{
+  width:13px;
+  height:13px;
+  border-radius:50%;
+  display:inline-block;
+  margin-right:5px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🎮 WINGO DEMO</h1>
+
+<div class="card">
+  <div class="label">Current Period</div>
+  <div class="period" id="period">100001</div>
+
+  <div class="label" style="margin-top:15px">
+    Next Result In
+  </div>
+  <div class="timer" id="timer">30</div>
+</div>
+
+<div class="card result">
+  <div class="label">Demo Result</div>
+  <div class="number" id="number">-</div>
+  <div class="color" id="color">Waiting...</div>
+  <div id="size" style="margin-top:8px">-</div>
+</div>
+
+<div class="card">
+  <div class="label">History</div>
+  <div id="history"></div>
+</div>
+
+<button onclick="newResult()">Generate Demo Result</button>
+
+</div>
+
+<script>
+let period = 100001;
+let timeLeft = 30;
+let historyData = [];
+
+const timerEl = document.getElementById("timer");
+const periodEl = document.getElementById("period");
+const numberEl = document.getElementById("number");
+const colorEl = document.getElementById("color");
+const sizeEl = document.getElementById("size");
+const historyEl = document.getElementById("history");
+
+function getColor(n){
+  if(n === 0 || n === 5) return "Violet";
+  if([1,3,7,9].includes(n)) return "Green";
+  return "Red";
+}
+
+function getSize(n){
+  return n >= 5 ? "BIG" : "SMALL";
+}
+
+function newResult(){
+
+  const n = Math.floor(Math.random() * 10);
+  const color = getColor(n);
+  const size = getSize(n);
+
+  numberEl.textContent = n;
+  colorEl.textContent = color;
+  sizeEl.textContent = size;
+
+  colorEl.className = "color " + color.toLowerCase();
+
+  historyData.unshift({
+    period: period,
+    number: n,
+    color: color,
+    size: size
+  });
+
+  if(historyData.length > 8){
+    historyData.pop();
+  }
+
+  renderHistory();
+
+  period++;
+  periodEl.textContent = period;
+}
+
+function renderHistory(){
+  historyEl.innerHTML = "";
+
+  historyData.forEach(item => {
+
+    let colorClass = item.color.toLowerCase();
+
+    historyEl.innerHTML += `
+      <div class="history">
+        <span>${item.period}</span>
+        <span>
+          <b>${item.number}</b>
+          <span class="dot ${colorClass}"
+          style="background:currentColor"></span>
+          ${item.color}
+        </span>
+        <span>${item.size}</span>
+      </div>
+    `;
+  });
+}
+
+setInterval(() => {
+
+  timeLeft--;
+
+  if(timeLeft <= 0){
+    timeLeft = 30;
+    newResult();
+  }
+
+  timerEl.textContent = timeLeft;
+
+},1000);
+</script>
+
+</body>
+</html>
+```
