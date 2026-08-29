@@ -1,1 +1,34 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MADRA REAL TRACKER</title><style>body{margin:0;background:#000;color:#fff;font-family:sans-serif;text-align:center}.h{background:linear-gradient(90deg,red,orange);padding:14px;font-weight:bold}.card{background:#151515;margin:10px;padding:12px;border-radius:12px;border:1px solid #333}#timer{font-size:50px;color:#ffcc00;font-weight:bold}#period{font-size:11px;color:#888;word-break:break-all}.b{padding:12px 24px;border:none;border-radius:20px;font-weight:bold;margin:5px}.big{background:#ff3131;color:#fff}.small{background:#2e90ff;color:#fff}.dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:3px;font-weight:bold}.BIG{background:#ff3131}.SMALL{background:#2e90ff}.suggest{margin-top:10px;padding:10px;border-radius:8px;font-weight:bold;font-size:16px}</style></head><body><div class=h>🔥 MADRA REAL TRACKER + TREND 🔥</div><div class=card><div id=period>Loading...</div><div id=timer>00:30</div></div><div class=card><div id=suggestion class=suggest style="background:#222;color:#aaa">History ka wait hai...</div><div style="margin-top:10px"><button class="b big" onclick="add('BIG')">BIG 🔴</button><button class="b small" onclick="add('SMALL')">SMALL 🔵</button></div><div id=history style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:10px"></div><div id=stats style="color:#0f0;margin-top:10px"></div><div style="font-size:10px;color:#666;margin-top:8px">⚠️ Ye sirf history par based andaza hai, guarantee nahi hai. Soch samajh ke khelo.</div></div><script>let h=JSON.parse(localStorage.getItem('m')||'[]');function add(r){let p=document.getElementById('period').innerText;h.unshift({r,p});if(h.length>20)h.pop();localStorage.setItem('m',JSON.stringify(h));render()}function render(){let s='',b=0,sm=0;h.forEach(x=>{if(x.r=='BIG')b++;else sm++;s+=`<div class=dot ${x.r}>${x.r[0]}</div>`});document.getElementById('history').innerHTML=s;document.getElementById('stats').innerText=`Total ${h.length} | BIG ${b} | SMALL ${sm}`;let sug=document.getElementById('suggestion');if(h.length<3){sug.innerText='Kam se kam 3 result dalo trend ke liye';sug.style.background='#222';return}let last3=h.slice(0,3).map(x=>x.r);if(last3[0]==last3[1]&&last3[1]==last3[2]){sug.innerText=`🔄 3 baar lagatar ${last3[0]} aaya! Ab ${last3[0]=='BIG'?'SMALL':'BIG'} ka trend ban sakta hai`;sug.style.background=last3[0]=='BIG'?'#2e90ff':'#ff3131'}else if(b>sm+3){sug.innerText=`📈 BIG zyada aaya hai (${b} vs ${sm}), SMALL ka wait kar sakte ho`;sug.style.background='#2e90ff'}else if(sm>b+3){sug.innerText=`📈 SMALL zyada aaya hai (${sm} vs ${b}), BIG ka wait kar sakte ho`;sug.style.background='#ff3131'}else{sug.innerText=`⚖️ Mix trend hai, 1 Level ka khel dekho`;sug.style.background='#333'}}async function sync(){let d=await(await fetch('/api/wingo')).json();document.getElementById('period').innerText='PERIOD: '+d.period;document.getElementById('timer').innerText='00:'+String(d.timer).padStart(2,'0')}setInterval(sync,1000);sync();render();</script></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{background:#000;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;font-family:sans-serif}
+.box{width:340px;background:#000;border:2px solid #00f5ff;border-radius:20px;padding:12px;box-shadow:0 0 20px #00f5ff}
+.top{border:2px solid #00f5ff;border-radius:12px;padding:10px;text-align:center;color:#00f5ff;font-weight:bold;font-size:20px;letter-spacing:1px}
+.vip{background:#00f5ff;color:#000;padding:2px 8px;border-radius:6px;font-size:12px;margin-left:5px}
+.mid{border:2px solid #00f5ff;border-radius:12px;padding:8px;margin:8px 0;display:flex;justify-content:space-between;color:#00f5ff;font-size:12px}
+.main{border:2px solid #00f5ff;border-radius:15px;height:180px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;overflow:hidden}
+.auth{border:2px solid #fff;border-radius:10px;padding:12px 30px;transform:rotate(-10deg);text-align:center}
+.auth b{color:#fff;letter-spacing:2px}
+.auth span{color:#00f5ff;font-size:12px}
+.btns{display:flex;gap:10px;margin-top:12px}
+.btn{flex:1;padding:12px;border-radius:12px;font-weight:bold;border:2px solid #fff}
+.login{background:linear-gradient(#fff,#00f5ff)}
+.hide{background:#fff}
+</style>
+</head>
+<body>
+<div class=box>
+  <div class=top>DEVIL X PANNLE <span class=vip>VIP</span></div>
+  <div class=mid><span>LIVE MOD: ACTIVE</span><span>PING: 48MS</span></div>
+  <div class=main>
+    <div class=auth><b>AUTH REQUIRED</b><br><span>LOGIN TO CONNECT SERVER</span></div>
+  </div>
+  <div class=btns>
+    <button class="btn login" onclick="alert('Ye sirf UI hai, real hack nahi hai')">LOGIN</button>
+    <button class="btn hide">👁️‍🗨️ HIDE</button>
+  </div>
+</div>
+</body>
+</html>
